@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HouseRules</title>
+  <link rel="stylesheet" href="style.css" />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@700;800&family=Sarala:wght@400;700&display=swap" rel="stylesheet"/>  <script src="https://unpkg.com/playroomkit/multiplayer.full.umd.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <!-- HOME SCREEN -->
+  <div class="screen active" id="screen-home">
+    <div class="noise"></div>
+    <div class="home-content">
+      <div class="logo-block">
+        <h1 class="logo">House<span>Rules</span></h1>
+        <p class="tagline">your game. your rules. your people.</p>
+      </div>
+      <div class="home-buttons">
+        <button class="btn btn-primary" onclick="goTo('screen-host')">host a game</button>
+        <button class="btn btn-secondary" onclick="joinGame()">join a game</button>
+      </div>
+    </div>
+    <div class="floating-cards">
+  <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
+  <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
+  <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
+  <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
+  <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
+</div>
+  </div>
+
+  <!-- HOST SCREEN -->
+  <div class="screen" id="screen-host">
+    <div class="noise"></div>
+    <div class="top-bar">
+      <button class="back-btn" onclick="goTo('screen-home')">← back</button>
+      <h2 class="screen-title">host a game</h2>
+    </div>
+    <div class="host-content">
+      <div class="game-cards">
+        <div class="game-card" onclick="selectGame('fishbowl', this)">
+          <span class="game-icon">🐟</span>
+          <h3>fishbowl</h3>
+          <p>3 rounds: taboo, charades, one word</p>
+        </div>
+        <div class="game-card" onclick="selectGame('charades', this)">
+          <span class="game-icon">🎭</span>
+          <h3>charades</h3>
+          <p>act it out, no talking!</p>
+        </div>
+      </div>
+
+      <div class="divider">or build your own</div>
+
+      <div class="custom-section">
+        <label class="label">enter custom words <span class="hint">(separate with commas)</span></label>
+        <textarea id="custom-words" placeholder="hiking chautauqua hungover, that talking stage, brat summer, red rocks at sunset, the walk of shame down broadway..."></textarea>
+        <button class="btn btn-primary" id="start-btn" onclick="startGame()" disabled>start game + open lobby</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME SCREEN (host view) -->
+  <div class="screen" id="screen-game">
+    <div class="noise"></div>
+    <div class="top-bar">
+      <button class="back-btn" onclick="endGame()">← end game</button>
+      <div class="game-meta">
+        <span id="game-name-display"></span>
+        <span class="room-pill" id="room-pill"></span>
+      </div>
+    </div>
+    <div class="game-content">
+      <div class="word-stage">
+        <p class="round-label" id="round-label">get ready!</p>
+        <div class="word-card" id="word-card">
+          <span id="current-word">waiting for players...</span>
+        </div>
+        <div class="word-actions" id="word-actions" style="display:none;">
+          <button class="btn btn-secondary" onclick="skipWord()">skip ↩</button>
+          <button class="btn btn-primary" onclick="nextWord()">got it! ✓</button>
+        </div>
+        <div class="score-bar">
+          <span>✓ <span id="score-count">0</span> words</span>
+          <span>↩ <span id="skip-count">0</span> skipped</span>
+          <span id="words-left-display"></span>
+        </div>
+        <div class="players-bar" id="players-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLAYER VIEW (non-host devices) -->
+  <div class="screen" id="screen-player">
+    <div class="noise"></div>
+    <div class="player-view">
+      <div class="pulse-ring"></div>
+      <p class="label">current word</p>
+      <div class="word-card" id="player-word-card">
+        <span id="player-current-word">waiting...</span>
+      </div>
+      <p class="player-hint">the host controls the game!</p>
+      <div class="score-bar" style="justify-content:center;">
+        <span>✓ <span id="player-score">0</span> words</span>
+        <span>↩ <span id="player-skips">0</span> skipped</span>
+      </div>
+    </div>
+  </div>
+<!-- below is the cancel button for when you go to the host your own button, once youre there you
+ are stuck there and cant seem to go back to the house rules website. its the playroom ui that cant be 
+ like overwritten. need to dig into this but for now you just have to reopen the website -->
+<div id="cancel-lobby" style="display:none; position:fixed; top:20px; left:20px; z-index:2147483647;">
+    <button onclick="cancelLobby()" style="
+      background: white;
+      color: black;
+      border: 2.5px solid black;
+      border-radius: 999px;
+      padding: 10px 20px;
+      font-family: 'Baloo Bhai 2', cursive;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 black;
+    ">← cancel</button>
+  </div>
+  <script src="script.js"></script>
+</div>
+</body>
+</html>
