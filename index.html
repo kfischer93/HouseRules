@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>HouseRules</title>
   <link rel="stylesheet" href="style.css" />
-<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@700;800&family=Sarala:wght@400;700&display=swap" rel="stylesheet"/>  <script src="https://unpkg.com/playroomkit/multiplayer.full.umd.js" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@700;800&family=Sarala:wght@400;700&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/playroomkit/multiplayer.full.umd.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -15,20 +16,20 @@
     <div class="home-content">
       <div class="logo-block">
         <h1 class="logo">House<span>Rules</span></h1>
-        <p class="tagline">your game. your rules. your people.</p>
+        <p class="tagline">your game. your rules.</p>
       </div>
       <div class="home-buttons">
         <button class="btn btn-primary" onclick="goTo('screen-host')">host a game</button>
-        <button class="btn btn-secondary" onclick="joinGame()">join a game</button>
+        <button class="btn btn-secondary" onclick="goToJoin()">join a game</button>
       </div>
     </div>
     <div class="floating-cards">
-  <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
-  <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
-  <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
-  <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
-  <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
-</div>
+      <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
+      <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
+      <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
+      <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
+      <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
+    </div>
   </div>
 
   <!-- HOST SCREEN -->
@@ -51,14 +52,78 @@
           <p>act it out, no talking!</p>
         </div>
       </div>
-
       <div class="divider">or build your own</div>
-
       <div class="custom-section">
         <label class="label">enter custom words <span class="hint">(separate with commas)</span></label>
         <textarea id="custom-words" placeholder="hiking chautauqua hungover, that talking stage, brat summer, red rocks at sunset, the walk of shame down broadway..."></textarea>
         <button class="btn btn-primary" id="start-btn" onclick="startGame()" disabled>start game + open lobby</button>
       </div>
+    </div>
+  </div>
+
+  <!-- HOST LOBBY SCREEN -->
+  <div class="screen" id="screen-lobby-host">
+    <div class="noise"></div>
+    <div class="top-bar">
+      <button class="back-btn" onclick="goTo('screen-home')">← cancel</button>
+      <h2 class="screen-title">the lobby</h2>
+    </div>
+    <div class="lobby-content">
+      <div class="lobby-code-block">
+        <p class="label">room code</p>
+        <div class="lobby-code-display" id="lobby-room-code">----</div>
+        <p class="lobby-code-hint">share this with your friends to join!</p>
+      </div>
+      <div class="lobby-share-block">
+        <p class="label">or share link</p>
+        <div class="lobby-link-row">
+          <span class="lobby-link-text" id="lobby-share-link"></span>
+          <button class="btn-small" id="copy-link-btn" onclick="copyShareLink()">copy link</button>
+        </div>
+      </div>
+      <div class="lobby-players-block">
+        <p class="lobby-player-count" id="lobby-player-count">waiting for players...</p>
+        <div class="lobby-players-list" id="lobby-players-list"></div>
+      </div>
+      <div class="lobby-launch-block">
+        <button class="btn btn-primary" onclick="launchGame()">launch game →</button>
+        <p class="lobby-launch-hint">everyone will see the game start on their device</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOIN SCREEN -->
+  <div class="screen" id="screen-join">
+    <div class="noise"></div>
+    <div class="top-bar">
+      <button class="back-btn" onclick="goTo('screen-home')">← back</button>
+      <h2 class="screen-title">join a game</h2>
+    </div>
+    <div class="join-content">
+      <div class="join-card">
+        <div class="join-field">
+          <label class="label" for="join-code-input">room code</label>
+          <input type="text" id="join-code-input" class="join-input join-input-code"
+            placeholder="ABCD" maxlength="8" autocomplete="off" autocapitalize="characters"
+            oninput="this.value = this.value.toUpperCase()"
+            onkeydown="if(event.key==='Enter') submitJoin()" />
+        </div>
+        <div class="join-field">
+          <label class="label" for="join-name-input">your name <span class="hint">(optional)</span></label>
+          <input type="text" id="join-name-input" class="join-input"
+            placeholder="what do your friends call you?" maxlength="20" autocomplete="off"
+            onkeydown="if(event.key==='Enter') submitJoin()" />
+        </div>
+        <p class="join-error" id="join-error" style="display:none;"></p>
+        <button class="btn btn-primary" id="join-submit-btn" onclick="submitJoin()">join game →</button>
+      </div>
+    </div>
+    <div class="floating-cards">
+      <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
+      <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
+      <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
+      <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
+      <span>★</span><span>✦</span><span>★</span><span>✶</span><span>✦</span>
     </div>
   </div>
 
@@ -92,7 +157,7 @@
     </div>
   </div>
 
-  <!-- PLAYER VIEW (non-host devices) -->
+  <!-- PLAYER VIEW -->
   <div class="screen" id="screen-player">
     <div class="noise"></div>
     <div class="player-view">
@@ -108,24 +173,7 @@
       </div>
     </div>
   </div>
-<!-- below is the cancel button for when you go to the host your own button, once youre there you
- are stuck there and cant seem to go back to the house rules website. its the playroom ui that cant be 
- like overwritten. need to dig into this but for now you just have to reopen the website -->
-<div id="cancel-lobby" style="display:none; position:fixed; top:20px; left:20px; z-index:2147483647;">
-    <button onclick="cancelLobby()" style="
-      background: white;
-      color: black;
-      border: 2.5px solid black;
-      border-radius: 999px;
-      padding: 10px 20px;
-      font-family: 'Baloo Bhai 2', cursive;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 3px 3px 0 black;
-    ">← cancel</button>
-  </div>
+
   <script src="script.js"></script>
-</div>
 </body>
 </html>
