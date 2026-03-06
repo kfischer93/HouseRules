@@ -5,7 +5,7 @@ A web-based social party game platform for friend groups to play and customize c
 Built for INFO Capstone by Girleez @ CU Boulder.
 
 ## Live Site
-[https://kfischer93.github.io/HouseRules](https://kfischer93.github.io/HouseRules)
+[https://playhouserules.tv](https://playhouserules.tv)
 
 ## How to Play
 1. One person hits **host a game** and picks a game or enters custom words
