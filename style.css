@@ -584,9 +584,7 @@ textarea::placeholder { color: var(--text-muted); }
 
 .step-pill.done {
   background: var(--surface2);
-  color: var(--text-muted);
-  text-decoration: line-through;
-}
+  color: var(--text-muted);}
 
 .setup-subtitle {
   font-family: 'Baloo Bhai 2', cursive;
