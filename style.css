@@ -1,3 +1,6 @@
+/* =====================
+   CSS VARIABLES
+===================== */
 :root {
   --bg: #FBF7EF;
   --surface: #ffffff;
@@ -13,6 +16,9 @@
   --radius-sm: 10px;
 }
 
+/* =====================
+   RESET & BASE
+===================== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -23,6 +29,9 @@ body {
   overflow: hidden;
 }
 
+/* =====================
+   SCREENS
+===================== */
 .screen {
   position: fixed;
   inset: 0;
@@ -34,6 +43,9 @@ body {
 }
 .screen.active { display: flex; }
 
+/* =====================
+   HOME SCREEN
+===================== */
 .home-content {
   display: flex;
   flex-direction: column;
@@ -84,6 +96,9 @@ body {
   max-width: 320px;
 }
 
+/* =====================
+   GLITTER STARS
+===================== */
 .floating-cards {
   position: fixed;
   inset: 0;
@@ -133,6 +148,9 @@ body {
   75% { opacity: 0.8; transform: scale(1.1) rotate(15deg); }
 }
 
+/* =====================
+   BUTTONS
+===================== */
 .btn {
   padding: 15px 24px;
   border: 2.5px solid var(--text);
@@ -180,6 +198,9 @@ body {
 }
 .btn-small:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--text); }
 
+/* =====================
+   TOP BAR
+===================== */
 .top-bar {
   display: flex;
   align-items: center;
@@ -208,6 +229,9 @@ body {
   color: var(--text);
 }
 
+/* =====================
+   HOST / SETUP SHARED
+===================== */
 .host-content {
   display: flex;
   flex-direction: column;
@@ -254,25 +278,6 @@ body {
   border-radius: 2px;
 }
 
-.game-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-.game-card {
-  background: var(--surface);
-  border: 2.5px solid var(--text);
-  border-radius: var(--radius);
-  padding: 18px 14px;
-  text-align: center;
-  cursor: pointer;
-  transition: transform 0.12s, box-shadow 0.12s;
-  box-shadow: 4px 4px 0 var(--text);
-}
-.game-card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--text); }
-.game-card.selected { background: var(--accent-pink); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--text); }
-
-.game-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
-.game-card h3 { font-family: 'Baloo Bhai 2', cursive; font-size: 1.05rem; font-weight: 800; margin-bottom: 4px; color: var(--text); }
-.game-card p { font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; }
-
 .custom-section {
   background: var(--surface);
   border-radius: var(--radius);
@@ -300,6 +305,9 @@ textarea {
 textarea:focus { outline: none; border-color: var(--accent-red); }
 textarea::placeholder { color: var(--text-muted); }
 
+/* =====================
+   GAME SCREEN
+===================== */
 .game-meta { display: flex; align-items: center; gap: 10px; margin-left: auto; }
 
 .room-pill {
@@ -368,6 +376,9 @@ textarea::placeholder { color: var(--text-muted); }
   box-shadow: 2px 2px 0 var(--text);
 }
 
+/* =====================
+   PLAYER VIEW
+===================== */
 .player-view { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: 20px; z-index: 2; position: relative; text-align: center; }
 .player-hint { font-size: 0.82rem; color: var(--text-muted); font-family: 'Sarala', sans-serif; }
 
@@ -383,6 +394,9 @@ textarea::placeholder { color: var(--text-muted); }
   100% { transform: scale(1.5); opacity: 0; }
 }
 
+/* =====================
+   ANIMATIONS
+===================== */
 .screen.active { animation: fadeIn 0.2s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -393,7 +407,9 @@ textarea::placeholder { color: var(--text-muted); }
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* HOST LOBBY */
+/* =====================
+   HOST LOBBY
+===================== */
 .lobby-content { display: flex; flex-direction: column; gap: 20px; max-width: 480px; margin: 0 auto; width: 100%; z-index: 2; position: relative; }
 
 .lobby-code-block {
@@ -480,7 +496,9 @@ textarea::placeholder { color: var(--text-muted); }
 .lobby-launch-block { display: flex; flex-direction: column; gap: 8px; align-items: center; }
 .lobby-launch-hint { font-size: 0.75rem; color: var(--text-muted); font-family: 'Sarala', sans-serif; text-align: center; }
 
-/* JOIN SCREEN */
+/* =====================
+   JOIN SCREEN
+===================== */
 .join-content { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; z-index: 2; position: relative; width: 100%; }
 
 .join-card {
@@ -530,4 +548,395 @@ textarea::placeholder { color: var(--text-muted); }
   color: var(--accent-red);
   font-family: 'Sarala', sans-serif;
   text-align: center;
+}
+
+/* =====================
+   SETUP FLOW (3 steps)
+===================== */
+.setup-steps {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  z-index: 2;
+  position: relative;
+}
+
+.step-pill {
+  flex: 1;
+  text-align: center;
+  padding: 6px 4px;
+  border-radius: 999px;
+  font-family: 'Baloo Bhai 2', cursive;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border: 2px solid var(--text);
+  background: var(--surface2);
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  transition: background 0.15s, color 0.15s;
+}
+
+.step-pill.active {
+  background: var(--accent-pink);
+  color: var(--text);
+  box-shadow: 3px 3px 0 var(--text);
+}
+
+.step-pill.done {
+  background: var(--surface2);
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.setup-subtitle {
+  font-family: 'Baloo Bhai 2', cursive;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.style-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.style-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--surface);
+  border: 2.5px solid var(--text);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s;
+  box-shadow: 4px 4px 0 var(--text);
+}
+.style-card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--text); }
+.style-card.selected { background: var(--accent-pink); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--text); }
+
+.style-card--soon { opacity: 0.5; cursor: not-allowed; }
+.style-card--soon:hover { transform: none; box-shadow: 4px 4px 0 var(--text); }
+
+.style-icon { font-size: 1.8rem; flex-shrink: 0; }
+
+.style-info h3 {
+  font-family: 'Baloo Bhai 2', cursive;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.style-info p { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+.soon-tag {
+  font-family: 'Sarala', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: var(--surface2);
+  border: 1.5px solid var(--text-muted);
+  color: var(--text-muted);
+  padding: 1px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.details-card {
+  background: var(--surface);
+  border: 2.5px solid var(--text);
+  border-radius: var(--radius);
+  padding: 4px 0;
+  box-shadow: 4px 4px 0 var(--text);
+  margin-bottom: 16px;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  gap: 12px;
+}
+
+.detail-divider { height: 1.5px; background: var(--surface2); margin: 0 18px; }
+
+.detail-hint { display: block; margin-top: 1px; }
+
+.detail-input-row { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+
+.counter-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 2px solid var(--text);
+  background: var(--surface2);
+  font-family: 'Baloo Bhai 2', cursive;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s, transform 0.1s;
+  box-shadow: 2px 2px 0 var(--text);
+}
+.counter-btn:hover { background: var(--accent-yellow); transform: translate(-1px,-1px); }
+.counter-btn:active { transform: translateY(1px); }
+
+.counter-val {
+  font-family: 'Baloo Bhai 2', cursive;
+  font-size: 1.1rem;
+  font-weight: 800;
+  min-width: 36px;
+  text-align: center;
+  color: var(--text);
+}
+
+.toggle-btn {
+  padding: 6px 18px;
+  border-radius: 999px;
+  border: 2px solid var(--text);
+  background: var(--surface2);
+  font-family: 'Baloo Bhai 2', cursive;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--text-muted);
+  box-shadow: 2px 2px 0 var(--text);
+  transition: background 0.15s, color 0.15s, transform 0.1s;
+  flex-shrink: 0;
+}
+.toggle-btn:hover { transform: translate(-1px,-1px); }
+.toggle-btn--on { background: #7A9476; color: #fff; border-color: var(--text); }
+
+.review-card {
+  background: var(--surface);
+  border: 2.5px solid var(--text);
+  border-radius: var(--radius);
+  box-shadow: 4px 4px 0 var(--text);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.review-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 18px;
+  border-bottom: 1.5px solid var(--surface2);
+}
+.review-row:last-child { border-bottom: none; }
+
+.review-label {
+  font-family: 'Sarala', sans-serif;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+}
+
+.review-val {
+  font-family: 'Baloo Bhai 2', cursive;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* =====================
+   TINDER GAME
+===================== */
+.tinder-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.preset-btn {
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: 2px solid var(--text);
+  background: var(--surface2);
+  font-family: 'Baloo Bhai 2', cursive;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--text);
+  box-shadow: 2px 2px 0 var(--text);
+  transition: background 0.1s, transform 0.1s;
+}
+.preset-btn:hover { background: var(--accent-yellow); transform: translate(-1px,-1px); }
+.preset-btn--active { background: var(--accent-pink); }
+
+.tinder-custom-labels { display: flex; gap: 12px; }
+.tinder-custom-labels .join-field { flex: 1; }
+
+.tinder-upload-area {
+  background: var(--surface);
+  border: 2.5px dashed var(--text);
+  border-radius: var(--radius);
+  padding: 32px 24px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.15s;
+}
+.tinder-upload-area:hover { background: var(--surface2); }
+.tinder-upload-icon { font-size: 2.5rem; }
+.tinder-upload-hint { font-family: 'Baloo Bhai 2', cursive; font-weight: 700; font-size: 1rem; }
+
+.tinder-thumb-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.tinder-thumb {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-sm);
+  border: 2.5px solid var(--text);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  box-shadow: 3px 3px 0 var(--text);
+}
+
+.tinder-thumb-remove {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent-red);
+  color: #fff;
+  border: 2px solid var(--text);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tinder-vote-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 0 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.tinder-card-stack { width: 100%; max-width: 340px; position: relative; }
+
+.tinder-photo-card {
+  width: 100%;
+  aspect-ratio: 3/4;
+  border-radius: 24px;
+  border: 2.5px solid var(--text);
+  box-shadow: 6px 6px 0 var(--text);
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+  user-select: none;
+  background: var(--surface2);
+}
+.tinder-photo-card:active { cursor: grabbing; }
+.tinder-photo-card img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; display: block; }
+
+.tinder-vote-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Baloo Bhai 2', cursive;
+  font-size: 2rem;
+  font-weight: 800;
+  opacity: 0;
+  transition: opacity 0.1s;
+  border-radius: 22px;
+  pointer-events: none;
+}
+.tinder-overlay-left { background: rgba(254, 86, 75, 0.55); color: #fff; }
+.tinder-overlay-right { background: rgba(122, 148, 118, 0.55); color: #fff; }
+
+.tinder-vote-btns { display: flex; gap: 24px; }
+
+.tinder-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2.5px solid var(--text);
+  font-family: 'Baloo Bhai 2', cursive;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s;
+  box-shadow: 4px 4px 0 var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.2;
+}
+.tinder-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--text); }
+.tinder-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+.tinder-btn-left { background: var(--accent-red); color: #fff; }
+.tinder-btn-right { background: #7A9476; color: #fff; }
+
+.tinder-voted-msg { font-family: 'Sarala', sans-serif; font-size: 0.82rem; color: var(--text-muted); text-align: center; }
+
+.tinder-results-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+
+.tinder-result-card {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  background: var(--surface);
+  border: 2.5px solid var(--text);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: 4px 4px 0 var(--text);
+}
+
+.tinder-result-img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--text);
+  flex-shrink: 0;
+}
+
+.tinder-result-info { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.tinder-result-owner { font-family: 'Baloo Bhai 2', cursive; font-weight: 800; font-size: 1rem; color: var(--text); }
+
+.tinder-result-bar {
+  height: 10px;
+  background: var(--accent-red);
+  border-radius: 999px;
+  border: 1.5px solid var(--text);
+  overflow: hidden;
+}
+.tinder-result-fill { height: 100%; background: #7A9476; border-radius: 999px; transition: width 0.6s ease; }
+
+.tinder-result-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Sarala', sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }

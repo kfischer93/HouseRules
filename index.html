@@ -32,36 +32,202 @@
     </div>
   </div>
 
-  <!-- HOST SCREEN -->
+  <!-- STEP 1: PICK A STYLE -->
   <div class="screen" id="screen-host">
     <div class="noise"></div>
     <div class="top-bar">
       <button class="back-btn" onclick="goTo('screen-home')">← back</button>
-      <h2 class="screen-title">host a game</h2>
+      <h2 class="screen-title">design a game</h2>
+    </div>
+    <div class="setup-steps">
+      <div class="step-pill active">① style</div>
+      <div class="step-pill">② details</div>
+      <div class="step-pill">③ review</div>
     </div>
     <div class="host-content">
-      <div class="game-cards">
-        <div class="game-card" onclick="selectGame('fishbowl', this)">
-          <span class="game-icon">🐟</span>
-          <h3>fishbowl</h3>
-          <p>3 rounds: taboo, charades, one word</p>
+      <p class="setup-subtitle">what kind of game?</p>
+      <div class="style-cards">
+        <div class="style-card" onclick="pickStyle('fishbowl', this)">
+          <span class="style-icon">🐟</span>
+          <div class="style-info">
+            <h3>fishbowl</h3>
+            <p>3 rounds: taboo → charades → one word</p>
+          </div>
         </div>
-        <div class="game-card" onclick="selectGame('charades', this)">
-          <span class="game-icon">🎭</span>
-          <h3>charades</h3>
-          <p>act it out, no talking!</p>
+        <div class="style-card" onclick="pickStyle('charades', this)">
+          <span class="style-icon">🎭</span>
+          <div class="style-info">
+            <h3>charades</h3>
+            <p>act it out, no talking!</p>
+          </div>
+        </div>
+        <div class="style-card style-card--soon">
+          <span class="style-icon">⚡</span>
+          <div class="style-info">
+            <h3>versus <span class="soon-tag">coming soon</span></h3>
+            <p>who wore it better? you decide.</p>
+          </div>
+        </div>
+        <div class="style-card" onclick="pickStyle('tinder', this)">
+          <span class="style-icon">🔥</span>
+          <div class="style-info">
+            <h3>tinder</h3>
+            <p>hot or not? swipe to vote.</p>
+          </div>
         </div>
       </div>
-      <div class="divider">or build your own</div>
-      <div class="custom-section">
-        <label class="label">enter custom words <span class="hint">(separate with commas)</span></label>
-        <textarea id="custom-words" placeholder="hiking chautauqua hungover, that talking stage, brat summer, red rocks at sunset, the walk of shame down broadway..."></textarea>
-        <button class="btn btn-primary" id="start-btn" onclick="startGame()" disabled>start game + open lobby</button>
+      <button class="btn btn-primary" id="style-next-btn" onclick="goToDetails()" disabled>next: details →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: DETAILS -->
+  <div class="screen" id="screen-details">
+    <div class="noise"></div>
+    <div class="top-bar">
+      <button class="back-btn" onclick="goTo('screen-host')">← back</button>
+      <h2 class="screen-title">design a game</h2>
+    </div>
+    <div class="setup-steps">
+      <div class="step-pill done">① style</div>
+      <div class="step-pill active">② details</div>
+      <div class="step-pill">③ review</div>
+    </div>
+    <div class="host-content">
+      <p class="setup-subtitle" id="details-subtitle">configure your game</p>
+      <div class="details-card">
+        <div class="detail-row">
+          <label class="label"># of players</label>
+          <div class="detail-input-row">
+            <button class="counter-btn" onclick="adjustCounter('num-players', -1)">−</button>
+            <span class="counter-val" id="num-players">6</span>
+            <button class="counter-btn" onclick="adjustCounter('num-players', 1)">+</button>
+          </div>
+        </div>
+        <div class="detail-divider"></div>
+        <div class="detail-row">
+          <label class="label">cards per player</label>
+          <div class="detail-input-row">
+            <button class="counter-btn" onclick="adjustCounter('cards-per', -1)">−</button>
+            <span class="counter-val" id="cards-per">5</span>
+            <button class="counter-btn" onclick="adjustCounter('cards-per', 1)">+</button>
+          </div>
+        </div>
+        <div class="detail-divider"></div>
+        <div class="detail-row">
+          <label class="label">time per turn</label>
+          <div class="detail-input-row">
+            <button class="counter-btn" onclick="adjustTimer(-15)">−</button>
+            <span class="counter-val" id="timer-display">60s</span>
+            <button class="counter-btn" onclick="adjustTimer(15)">+</button>
+          </div>
+        </div>
+        <div class="detail-divider"></div>
+        <div class="detail-row">
+          <label class="label">superlatives <span class="hint detail-hint">award titles at the end</span></label>
+          <button class="toggle-btn" id="toggle-superlatives" onclick="toggleSetting('superlatives')">off</button>
+        </div>
+        <div class="detail-divider"></div>
+        <div class="detail-row">
+          <label class="label">21+ mode <span class="hint detail-hint">spicier words & prompts</span></label>
+          <button class="toggle-btn" id="toggle-adult" onclick="toggleSetting('adult')">off</button>
+        </div>
       </div>
+
+      <!-- TINDER-ONLY: vote labels -->
+      <div id="tinder-label-section" style="display:none;">
+        <div class="divider">voting labels</div>
+        <div class="custom-section">
+          <label class="label">pick a preset or make your own</label>
+          <div class="tinder-presets">
+            <button class="preset-btn" onclick="applyPreset('kiki','booba')">kiki / booba</button>
+            <button class="preset-btn" onclick="applyPreset('hot','not')">hot / not</button>
+            <button class="preset-btn" onclick="applyPreset('smash','pass')">smash / pass</button>
+            <button class="preset-btn" onclick="applyPreset('yes','no')">yes / no</button>
+          </div>
+          <div class="tinder-custom-labels">
+            <div class="join-field">
+              <label class="label">👈 left swipe</label>
+              <input type="text" id="tinder-label-left" class="join-input" placeholder="e.g. not, pass, booba" maxlength="20" />
+            </div>
+            <div class="join-field">
+              <label class="label">👉 right swipe</label>
+              <input type="text" id="tinder-label-right" class="join-input" placeholder="e.g. hot, smash, kiki" maxlength="20" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORD GAME ONLY: custom words -->
+      <div id="custom-words-section">
+        <div class="divider">add your own words</div>
+        <div class="custom-section">
+          <label class="label">custom words <span class="hint">(comma separated)</span></label>
+          <textarea id="custom-words" placeholder="hiking chautauqua hungover, brat summer, red rocks at sunset..."></textarea>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="goToReview()">next: review →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: REVIEW -->
+  <div class="screen" id="screen-review">
+    <div class="noise"></div>
+    <div class="top-bar">
+      <button class="back-btn" onclick="goTo('screen-details')">← back</button>
+      <h2 class="screen-title">design a game</h2>
+    </div>
+    <div class="setup-steps">
+      <div class="step-pill done">① style</div>
+      <div class="step-pill done">② details</div>
+      <div class="step-pill active">③ review</div>
+    </div>
+    <div class="host-content">
+      <p class="setup-subtitle">looks good?</p>
+      <div class="review-card">
+        <div class="review-row">
+          <span class="review-label">game</span>
+          <span class="review-val" id="review-game">—</span>
+        </div>
+        <div class="review-row">
+          <span class="review-label">players</span>
+          <span class="review-val" id="review-players">—</span>
+        </div>
+        <div class="review-row">
+          <span class="review-label">cards each</span>
+          <span class="review-val" id="review-cards">—</span>
+        </div>
+        <div class="review-row">
+          <span class="review-label">timer</span>
+          <span class="review-val" id="review-timer">—</span>
+        </div>
+        <div class="review-row">
+          <span class="review-label">superlatives</span>
+          <span class="review-val" id="review-superlatives">—</span>
+        </div>
+        <div class="review-row">
+          <span class="review-label">21+ mode</span>
+          <span class="review-val" id="review-adult">—</span>
+        </div>
+        <div class="review-row" id="review-words-row">
+          <span class="review-label">custom words</span>
+          <span class="review-val" id="review-words">—</span>
+        </div>
+      </div>
+            <div class="custom-section">
+        <div class="join-field">
+          <label class="label" for="host-name-input">your name</label>
+          <input type="text" id="host-name-input" class="join-input"
+            placeholder="what do your friends call you?"
+            maxlength="20" autocomplete="off" />
+        </div>
+      </div>
+      <button class="btn btn-primary" id="start-btn" onclick="startGame()">let's go! open lobby →</button>
     </div>
   </div>
 
   <!-- HOST LOBBY SCREEN -->
+
   <div class="screen" id="screen-lobby-host">
     <div class="noise"></div>
     <div class="top-bar">
@@ -109,7 +275,7 @@
             onkeydown="if(event.key==='Enter') submitJoin()" />
         </div>
         <div class="join-field">
-          <label class="label" for="join-name-input">your name <span class="hint">(optional)</span></label>
+          <label class="label" for="join-name-input">your name <span class="hint"></span></label>
           <input type="text" id="join-name-input" class="join-input"
             placeholder="what do your friends call you?" maxlength="20" autocomplete="off"
             onkeydown="if(event.key==='Enter') submitJoin()" />
@@ -127,7 +293,7 @@
     </div>
   </div>
 
-  <!-- GAME SCREEN (host view) -->
+  <!-- GAME SCREEN (host view - fishbowl/charades) -->
   <div class="screen" id="screen-game">
     <div class="noise"></div>
     <div class="top-bar">
@@ -157,7 +323,7 @@
     </div>
   </div>
 
-  <!-- PLAYER VIEW -->
+  <!-- PLAYER VIEW (fishbowl/charades) -->
   <div class="screen" id="screen-player">
     <div class="noise"></div>
     <div class="player-view">
@@ -171,6 +337,82 @@
         <span>✓ <span id="player-score">0</span> words</span>
         <span>↩ <span id="player-skips">0</span> skipped</span>
       </div>
+    </div>
+  </div>
+
+  <!-- TINDER: UPLOAD SCREEN -->
+  <div class="screen" id="screen-tinder-upload">
+    <div class="noise"></div>
+    <div class="top-bar">
+      <h2 class="screen-title">add your photos</h2>
+      <span class="room-pill" id="tinder-upload-pill"></span>
+    </div>
+    <div class="host-content">
+      <p class="setup-subtitle" id="tinder-upload-subtitle">upload your pics</p>
+      <div class="tinder-upload-area" id="tinder-upload-area" onclick="document.getElementById('tinder-file-input').click()">
+        <div class="tinder-upload-icon">📸</div>
+        <p class="tinder-upload-hint">tap to add photos</p>
+        <p class="hint" id="tinder-upload-count">0 / 3 added</p>
+      </div>
+      <input type="file" id="tinder-file-input" accept="image/*" multiple style="display:none" onchange="handlePhotoUpload(event)" />
+      <div class="tinder-thumb-row" id="tinder-thumb-row"></div>
+      <button class="btn btn-primary" id="tinder-upload-done-btn" onclick="submitPhotos()" disabled>done, i'm ready →</button>
+      <p class="lobby-launch-hint" id="tinder-waiting-msg" style="display:none;">your photos are in! waiting for everyone else...</p>
+      <div class="lobby-players-block" style="margin-top:8px;">
+        <p class="lobby-player-count" id="tinder-ready-count">waiting for players...</p>
+        <div class="lobby-players-list" id="tinder-ready-list"></div>
+      </div>
+      <div id="tinder-host-launch" style="display:none; margin-top:8px;">
+        <button class="btn btn-primary" onclick="launchTinder()">everyone's in — start voting! →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TINDER: VOTING SCREEN -->
+  <div class="screen" id="screen-tinder-vote">
+    <div class="noise"></div>
+    <div class="top-bar">
+      <button class="back-btn" onclick="endGame()">← end</button>
+      <h2 class="screen-title" id="tinder-vote-title">vote</h2>
+      <span class="room-pill" id="tinder-progress-pill">1 / 10</span>
+    </div>
+    <div class="tinder-vote-content">
+      <div class="tinder-card-stack">
+        <div class="tinder-photo-card" id="tinder-photo-card"
+          ontouchstart="tinderTouchStart(event)"
+          ontouchmove="tinderTouchMove(event)"
+          ontouchend="tinderTouchEnd(event)"
+          onmousedown="tinderMouseDown(event)">
+          <img id="tinder-photo-img" src="" alt="photo" />
+          <div class="tinder-vote-overlay tinder-overlay-left" id="tinder-overlay-left">
+            <span id="tinder-label-left-display">not</span>
+          </div>
+          <div class="tinder-vote-overlay tinder-overlay-right" id="tinder-overlay-right">
+            <span id="tinder-label-right-display">hot</span>
+          </div>
+        </div>
+      </div>
+      <div class="tinder-vote-btns">
+        <button class="tinder-btn tinder-btn-left" id="tinder-btn-left" onclick="castVote('left')">
+          <span id="tinder-btn-left-label">not</span>
+        </button>
+        <button class="tinder-btn tinder-btn-right" id="tinder-btn-right" onclick="castVote('right')">
+          <span id="tinder-btn-right-label">hot</span>
+        </button>
+      </div>
+      <p class="tinder-voted-msg" id="tinder-voted-msg" style="display:none;">vote cast! waiting for next photo...</p>
+    </div>
+  </div>
+
+  <!-- TINDER: RESULTS SCREEN -->
+  <div class="screen" id="screen-tinder-results">
+    <div class="noise"></div>
+    <div class="top-bar">
+      <h2 class="screen-title">results 🎉</h2>
+    </div>
+    <div class="host-content">
+      <div class="tinder-results-list" id="tinder-results-list"></div>
+      <button class="btn btn-secondary" onclick="endGame()">back to home</button>
     </div>
   </div>
 
