@@ -633,8 +633,7 @@ textarea::placeholder { color: var(--text-muted); }
   gap: 8px;
 }
 
-.style-info p { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
-
+.style-info p { font-size: 0.78rem; color: var(--text); font-weight: 700; margin-top: 2px; }
 .soon-tag {
   font-family: 'Sarala', sans-serif;
   font-size: 0.65rem;
