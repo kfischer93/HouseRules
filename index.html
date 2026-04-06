@@ -214,12 +214,12 @@
           <span class="review-val" id="review-words">—</span>
         </div>
       </div>
-            <div class="custom-section">
+      <div class="custom-section">
         <div class="join-field">
           <label class="label" for="host-name-input">your name</label>
           <input type="text" id="host-name-input" class="join-input"
             placeholder="what do your friends call you?"
-            maxlength="20" autocomplete="off" />
+            maxlength="20" autocomplete="off" required />
         </div>
       </div>
       <button class="btn btn-primary" id="start-btn" onclick="startGame()">let's go! open lobby →</button>
@@ -227,7 +227,6 @@
   </div>
 
   <!-- HOST LOBBY SCREEN -->
-
   <div class="screen" id="screen-lobby-host">
     <div class="noise"></div>
     <div class="top-bar">
@@ -275,10 +274,10 @@
             onkeydown="if(event.key==='Enter') submitJoin()" />
         </div>
         <div class="join-field">
-          <label class="label" for="join-name-input">your name <span class="hint"></span></label>
+          <label class="label" for="join-name-input">your name</label>
           <input type="text" id="join-name-input" class="join-input"
             placeholder="what do your friends call you?" maxlength="20" autocomplete="off"
-            onkeydown="if(event.key==='Enter') submitJoin()" />
+            required onkeydown="if(event.key==='Enter') submitJoin()" />
         </div>
         <p class="join-error" id="join-error" style="display:none;"></p>
         <button class="btn btn-primary" id="join-submit-btn" onclick="submitJoin()">join game →</button>

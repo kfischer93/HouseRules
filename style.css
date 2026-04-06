@@ -937,3 +937,17 @@ textarea::placeholder { color: var(--text-muted); }
   font-size: 0.75rem;
   color: var(--text-muted);
 }
+
+input:invalid {
+  border-color: var(--accent-red);
+  box-shadow: none;
+}
+
+input:valid {
+  border-color: var(--text);
+  box-shadow: none;
+}
+
+input:placeholder-shown {
+  border-color: var(--text);
+}
