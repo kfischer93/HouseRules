@@ -175,18 +175,33 @@ function goToJoin() {
 async function submitJoin() {
   const code = document.getElementById('join-code-input').value.trim().toUpperCase();
   const nameInput = document.getElementById('join-name-input').value.trim();
-  if (!code || code.length < 4) { showJoinError('enter a valid room code!'); return; }
-  if (!nameInput) { showJoinError('enter your name first!'); return; }
+
+  if (!code || code.length < 4) {
+    showJoinError('enter a valid room code!');
+    return;
+  }
+  if (!nameInput) {
+    showJoinError('enter your name first!');
+    return;
+  }
+
   const btn = document.getElementById('join-submit-btn');
   btn.disabled = true;
   btn.textContent = 'joining...';
+
   try {
     await _insertCoin({ skipLobby: true, roomCode: code });
-    // store name in this player's own state — works with skipLobby
-    if (_myPlayer()) {
-      _myPlayer().setState('playerName', nameInput);
+
+    const me = _myPlayer();
+    if (me) {
+      me.setState('playerName', nameInput);
     }
-    setupGame();
+
+    // give the state a moment to exist before rendering next screen
+    setTimeout(() => {
+      setupGame();
+    }, 100);
+
   } catch (err) {
     showJoinError("couldn't find that room. check the code!");
     btn.disabled = false;
@@ -240,35 +255,58 @@ async function startGame() {
     return;
   }
 
-  const hostName = document.getElementById('host-name-input').value.trim() || 'host';
-  _setState("hostName", hostName);
-  _setState("wordList", JSON.stringify(wordList));
-  _setState("currentIndex", 0);
-  _setState("score", 0);
-  _setState("skips", 0);
-  _setState("gameStarted", false);
-  _setState("gameName", gameSettings.style || "custom");
-  _setState("timerSeconds", gameSettings.timerSeconds);
+const hostName = document.getElementById('host-name-input').value.trim() || 'host';
+_setState("hostName", hostName);
 
-  showHostLobby();
+const me = _myPlayer();
+if (me) {
+  me.setState('playerName', hostName);
+}
+
+_setState("wordList", JSON.stringify(wordList));
+_setState("currentIndex", 0);
+_setState("score", 0);
+_setState("skips", 0);
+_setState("gameStarted", false);
+_setState("gameName", gameSettings.style || "custom");
+_setState("timerSeconds", gameSettings.timerSeconds);
+
+showHostLobby();
 }
 
 // --- CUSTOM HOST LOBBY ---
 function showHostLobby() {
   goTo('screen-lobby-host');
+
   const roomCode = _getRoomCode();
   document.getElementById('lobby-room-code').textContent = roomCode;
+
   const shareUrl = window.location.origin + window.location.pathname + '#r=' + roomCode;
   document.getElementById('lobby-share-link').textContent = shareUrl;
+
   connectedPlayers = [];
+
   _onPlayerJoin((player) => {
-    connectedPlayers.push(player);
+    // avoid duplicates
+    if (!connectedPlayers.find(p => p.id === player.id)) {
+      connectedPlayers.push(player);
+    }
+
     updateLobbyPlayers();
+
+    // re-render when their custom name arrives
+    if (player.onStateChange) {
+      player.onStateChange('playerName', () => {
+        updateLobbyPlayers();
+      });
+    }
+
     player.onQuit(() => {
-      connectedPlayers = connectedPlayers.filter(p => p !== player);
+      connectedPlayers = connectedPlayers.filter(p => p.id !== player.id);
       updateLobbyPlayers();
     });
   });
+
   updateLobbyPlayers();
 }
 
@@ -526,22 +564,40 @@ function showTinderUploadScreen() {
 
 function updateTinderReadyList() {
   const readyCount = Object.keys(tinderReadyPlayers).length;
-  // total = all connected players + host
-  const totalCount = connectedPlayers.length + 1;
-  document.getElementById('tinder-ready-count').textContent = readyCount + ' / ' + totalCount + ' players ready';
+
+  // dedupe players by id
+  const uniquePlayers = connectedPlayers.filter(
+    (p, index, arr) => arr.findIndex(x => x.id === p.id) === index
+  );
+
+  // only add host if host is NOT already in connectedPlayers
+  const hostAlreadyIncluded = uniquePlayers.some(p => p.id === 'host');
+  const totalCount = hostAlreadyIncluded ? uniquePlayers.length : uniquePlayers.length + 1;
+
+  document.getElementById('tinder-ready-count').textContent =
+    readyCount + ' / ' + totalCount + ' players ready';
 
   const colors = ['#EE94B8', '#E9C12A', '#7A9476', '#FE564B', '#C9756C', '#a8c5da'];
-  document.getElementById('tinder-ready-list').innerHTML = connectedPlayers.map((p, i) => {
+
+  document.getElementById('tinder-ready-list').innerHTML = uniquePlayers.map((p, i) => {
     const name = getPlayerName(p, 'player ' + (i + 1));
     const isReady = tinderReadyPlayers[p.id];
-    return '<div class="lobby-player-chip" style="background:' + colors[i % colors.length] + ';opacity:' + (isReady ? '1' : '0.4') + '">' +
-      '<span class="lobby-player-dot"></span>' + name + (isReady ? ' ✓' : '') + '</div>';
+    return (
+      '<div class="lobby-player-chip" style="background:' + colors[i % colors.length] +
+      ';opacity:' + (isReady ? '1' : '0.4') + '">' +
+      '<span class="lobby-player-dot"></span>' + name + (isReady ? ' ✓' : '') +
+      '</div>'
+    );
   }).join('');
 
   const hostReady = tinderReadyPlayers['host'];
-  const allReady = hostReady && connectedPlayers.every(p => tinderReadyPlayers[p.id]);
+  const everyoneElseReady = uniquePlayers.every(p => tinderReadyPlayers[p.id]);
+  const allReady = hostReady && everyoneElseReady;
+
   const launchDiv = document.getElementById('tinder-host-launch');
-  if (launchDiv && _isHost()) launchDiv.style.display = allReady ? 'block' : 'none';
+  if (launchDiv && _isHost()) {
+    launchDiv.style.display = allReady ? 'block' : 'none';
+  }
 }
 
 function handlePhotoUpload(event) {
